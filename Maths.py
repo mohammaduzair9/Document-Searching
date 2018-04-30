@@ -19,10 +19,32 @@ def make_dictionary(document):
                 dictionary[i] = 1
     return dictionary
 
+# making the inverted index of the document
+def make_invertedIndex(document):
+    inverted = {}
+    with open(document, 'r') as f:
+        lines = f.read().splitlines()   # making a list of all documents seperated by a newline character
+
+    idx = 1                                         # maintaining the current document index
+    for docs in lines:
+        doc_words = list(docs.split())               # getting the words od each document in a list
+        # for each word in documents
+        for word in doc_words:
+            if word in inverted:                    # if the word exists in the inverted index
+                if idx not in inverted[word]:       # if current document is not in the value of this word
+                    inverted[word].append(idx)      # add the current document as a value for the current word
+            else:
+                inverted[word] = [idx]              # if word is not a key of invertedindex then make a new key
+        idx += 1;
+    return inverted
+
 with open('docs.txt', 'r') as f:
     lines = f.read().splitlines()
 
 # making the dictionary
 dictionary = make_dictionary('docs.txt')
 print "Words in dictionary:  " , len(dictionary)
+
+# making the inverted index
+inverted = make_invertedIndex('docs.txt')
 
